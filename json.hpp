@@ -273,28 +273,34 @@ class JSON
 
         /// Functions for getting primitives from the JSON object.
         bool IsNull() const { return Type == Class::Null; }
+        bool IsFloat() const { return Type == Class::Floating; }
+        bool IsInt() const { return Type == Class::Integral; }
+        bool IsString() const { return Type == Class::String; }
+        bool IsBool() const { return Type == Class::Boolean; }
+        bool IsArray() const { return Type == Class::Array; }
+        bool IsObject() const { return Type == Class::Object; }
 
         std::string ToString() const { bool b; return std::move( ToString( b ) ); }
         std::string ToString( bool &ok ) const {
-            ok = (Type == Class::String);
+            ok = IsString();
             return ok ? std::move( json_escape( *Internal.String ) ): std::string("");
         }
 
         double ToFloat() const { bool b; return ToFloat( b ); }
         double ToFloat( bool &ok ) const {
-            ok = (Type == Class::Floating);
+            ok = IsFloat();
             return ok ? Internal.Float : 0.0;
         }
 
         long ToInt() const { bool b; return ToInt( b ); }
         long ToInt( bool &ok ) const {
-            ok = (Type == Class::Integral);
+            ok = IsInt();
             return ok ? Internal.Int : 0;
         }
 
         bool ToBool() const { bool b; return ToBool( b ); }
         bool ToBool( bool &ok ) const {
-            ok = (Type == Class::Boolean);
+            ok = IsBool();
             return ok ? Internal.Bool : false;
         }
 
